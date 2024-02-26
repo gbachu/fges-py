@@ -145,7 +145,7 @@ class FGES:
             max_bump_arrow = self.sorted_arrows.pop(0)  # Pops the highest bump edge off the sorted list
             x = max_bump_arrow.a
             y = max_bump_arrow.b
-             print("Popped arrow: " + str(x) + " -> " + str(y))
+            print("Popped arrow: " + str(x) + " -> " + str(y))
 
             if graph_util.adjacent(self.graph, x, y):
                 continue
