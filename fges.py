@@ -135,9 +135,9 @@ class FGES:
         Edges are popped off this list and added to the graph, after which point the Meek rules are utilized to
         orient edges in the graph that can be oriented. Then, all relevant bumps are recomputed and
         the list is resorted. This process is repeated until there remain no edges to add with positive bump."""
-         print("Running FES.`.")
-         print("Length of sorted arrows", len(self.sorted_arrows))
-         print(self.arrow_dict)
+        print("Running FES.`.")
+        print("Length of sorted arrows", len(self.sorted_arrows))
+        print(self.arrow_dict)
         while len(self.sorted_arrows) > 0:
             if self.checkpoint_frequency > 0 and (time.time() - self.last_checkpoint) > self.checkpoint_frequency:
                 self.create_checkpoint()
