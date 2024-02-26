@@ -225,6 +225,7 @@ class FGES:
 
             self.total_score += bump
             self.clear_arrow(x, y)
+            print("BES: Removed arrow " + str(x) + " -> " + str(y) + " with bump -" + str(bump))
             if self.verbose:
                 print("BES: Removed arrow " + str(x) + " -> " + str(y) + " with bump -" + str(bump)) # TODO: FLAG
             visited = self.reapply_orientation(x, y, H)
