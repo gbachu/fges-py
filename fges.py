@@ -97,7 +97,7 @@ class FGES:
         if self.graph is None:
             self.graph = nx.DiGraph()
             self.graph.add_nodes_from(self.variables)
-            # print("Created Graph with nodes: ", self.graph.nodes())
+            print("Created Graph with nodes: ", self.graph.nodes())
 
             # for now faithfulness is assumed
             self.add_required_edges()
@@ -126,7 +126,7 @@ class FGES:
         # self.mode = "covernoncolliders"
         # self.fes()
         # self.bes()
-        # print(self.graph.edges())
+        print(self.graph.edges())
         return self.get_dict()
 
     def fes(self):
@@ -135,9 +135,9 @@ class FGES:
         Edges are popped off this list and added to the graph, after which point the Meek rules are utilized to
         orient edges in the graph that can be oriented. Then, all relevant bumps are recomputed and
         the list is resorted. This process is repeated until there remain no edges to add with positive bump."""
-        # print("Running FES.`.")
-        # print("Length of sorted arrows", len(self.sorted_arrows))
-        # print(self.arrow_dict)
+         print("Running FES.`.")
+         print("Length of sorted arrows", len(self.sorted_arrows))
+         print(self.arrow_dict)
         while len(self.sorted_arrows) > 0:
             if self.checkpoint_frequency > 0 and (time.time() - self.last_checkpoint) > self.checkpoint_frequency:
                 self.create_checkpoint()
@@ -145,7 +145,7 @@ class FGES:
             max_bump_arrow = self.sorted_arrows.pop(0)  # Pops the highest bump edge off the sorted list
             x = max_bump_arrow.a
             y = max_bump_arrow.b
-            # print("Popped arrow: " + str(x) + " -> " + str(y))
+             print("Popped arrow: " + str(x) + " -> " + str(y))
 
             if graph_util.adjacent(self.graph, x, y):
                 continue
@@ -153,18 +153,18 @@ class FGES:
             na_y_x = graph_util.get_na_y_x(self.graph, x, y)
 
             # TODO: max degree checks
-            # print(na_y_x)
+            print(na_y_x)
 
             if max_bump_arrow.na_y_x != na_y_x:
                 continue
 
-            # print("Past crucial step")
+            print("Past crucial step")
 
             if not graph_util.get_t_neighbors(self.graph, x, y).issuperset(max_bump_arrow.h_or_t):
                 continue
 
             if not self.valid_insert(x, y, max_bump_arrow.h_or_t, na_y_x):
-                # print("Not valid insert")
+                print("Not valid insert")
                 continue
 
             T = max_bump_arrow.h_or_t
@@ -176,9 +176,9 @@ class FGES:
                 continue
 
             self.total_score += bump
-            # print("Edge set before reapplying orientation: " + str(self.graph.edges()))
+            print("Edge set before reapplying orientation: " + str(self.graph.edges()))
             visited_nodes = self.reapply_orientation(x, y, None)  # Orient edges appropriately following insertion
-            # print("Edge set after reapplying orientation: " + str(self.graph.edges()))
+            print("Edge set after reapplying orientation: " + str(self.graph.edges()))
             to_process = set({})
 
             # check whether the (undirected) neighbors of each node in
@@ -295,12 +295,12 @@ class FGES:
         return -1 * self.score_graph_change(y, a, x)
 
     def reevaluate_forward(self, to_process, arrow):
-        # print("Re-evaluate forward with " + str(to_process) + " " + str(arrow))
+        print("Re-evaluate forward with " + str(to_process) + " " + str(arrow))
         for node in to_process:
             if self.mode == "heuristic":
                 nzero_effect_nodes = self.effect_edges_graph.get(node)
-                # print("Re-evaluate forward. Currently on node: " + str(node))
-                # print("nzero-effect-nodes: " + str(nzero_effect_nodes))
+                print("Re-evaluate forward. Currently on node: " + str(node))
+                print("nzero-effect-nodes: " + str(nzero_effect_nodes))
             elif self.mode == "covernoncolliders":
                 g = set()
                 for n in graph_util.adjacent_nodes(self.graph, node):
@@ -543,8 +543,8 @@ class FGES:
 
     def add_arrow(self, a, b, na_y_x, h_or_t, bump):
         """Add arrow a->b with bump "bump" and conditioning sets na_y_x and h_or_t to sorted arrows list"""
-        # print("Added arrow: " + str(a) + " ->  " + str(b) + " with bump " + \
-        #  str(bump) + " and na_y_x " + str(na_y_x) + " and h_or_t " + str(h_or_t))
+        print("Added arrow: " + str(a) + " ->  " + str(b) + " with bump " + \
+        str(bump) + " and na_y_x " + str(na_y_x) + " and h_or_t " + str(h_or_t))
         arrow = Arrow(a, b, na_y_x, h_or_t, bump, self.arrow_index)
         self.sorted_arrows.add(arrow)
 
@@ -559,12 +559,12 @@ class FGES:
     def clear_arrow(self, a, b):
         """Remove arrow a->b from sorted arrows list"""
         pair = (a, b)
-        # print("Clearing arrow " + str(pair))
+        print("Clearing arrow " + str(pair))
         lookup_arrows = self.arrow_dict.get(pair)
-        # print(lookup_arrows)
+        print(lookup_arrows)
         if lookup_arrows is not None:
             for arrow in lookup_arrows:
-                # print("Removing " + str(arrow) + " from sorted_arrows")
+                print("Removing " + str(arrow) + " from sorted_arrows")
                 self.sorted_arrows.discard(arrow)
 
         self.arrow_dict[pair] = None
@@ -582,7 +582,7 @@ class FGES:
         return self.score.local_score_diff_parents(x, y_index, parent_indices)
 
     def calculate_arrows_forward(self, a, b):
-        # print("Calculate Arrows Forward: " + str(a) + " " + str(b))
+        print("Calculate Arrows Forward: " + str(a) + " " + str(b))
         if b not in self.effect_edges_graph[a] and self.mode == "heuristic":
             print("Returning early...")
             return
@@ -590,7 +590,7 @@ class FGES:
         if self.knowledge is not None and self.knowledge.is_forbidden(a, b):
             return
 
-        # print("Get neighbors for " + str(b) + " returns " + str(graph_util.neighbors(self.graph, b)))
+        print("Get neighbors for " + str(b) + " returns " + str(graph_util.neighbors(self.graph, b)))
 
         self.stored_neighbors[b] = graph_util.neighbors(self.graph, b)
 
@@ -601,7 +601,7 @@ class FGES:
             return
 
         t_neighbors = list(graph_util.get_t_neighbors(self.graph, a, b))
-        # print("tneighbors for " + str(a) + ", " + str(b) + " returns " + str(t_neighbors))
+        print("tneighbors for " + str(a) + ", " + str(b) + " returns " + str(t_neighbors))
         len_T = len(t_neighbors)
 
         def outer_loop():
@@ -612,10 +612,10 @@ class FGES:
 
                 choices = itertools.combinations(range(len_T), i)
                 choices2 = itertools.combinations(range(len_T), i)
-                # print("All choices: ", list(choices2), " TNeighbors: ", t_neighbors)
+                print("All choices: ", list(choices2), " TNeighbors: ", t_neighbors)
                 for choice in choices:
                     T = frozenset([t_neighbors[k] for k in choice])
-                    # print("Choice:", T)
+                    print("Choice:", T)
                     union = set(na_y_x)
                     union.update(T)
 
@@ -637,7 +637,7 @@ class FGES:
                     new_cliques.add(frozenset(union))
 
                     bump = self.insert_eval(a, b, T, na_y_x)
-                    # print("Evaluated arrow " + str(a) + " -> " + str(b) + " with T: " + str(T) + " and bump: " + str(bump));
+                    print("Evaluated arrow " + str(a) + " -> " + str(b) + " with T: " + str(T) + " and bump: " + str(bump));
 
                     if bump > 0:
                         self.add_arrow(a, b, na_y_x, T, bump)
