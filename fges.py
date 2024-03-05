@@ -9,6 +9,8 @@ import dill
 import os
 from knowledge import Knowledge
 
+last_matrix = None
+
 class Arrow:
     __slots__ = ['a', 'b', 'na_y_x', 'h_or_t', 'bump', 'index']
     def __init__(self, a, b, na_y_x, hOrT, bump, arrow_index):
@@ -72,11 +74,20 @@ class FGES:
 
     # Print with Matrix
     def printm(self, *message):
+        global last_matrix
         matrix = np.zeros((4, 4), dtype=int)
         for arrow in self.arrow_dict.keys():
             matrix[arrow[0], arrow[1]] = 1
         print("PRE-MATRIX")
-        print(matrix)
+        for i in range(4):
+            for j in range(4):
+                print(matrix[i][j], end="")
+                # Add an "!" if the value changed from the last time printm was called
+                if last_matrix is not None and matrix[i][j] == last_matrix[i][j]:
+                    print("!", end="")
+            print()
+        print()
+        last_matrix = matrix
         print(*message)
         
     def set_knowledge(self, knowledge):
@@ -105,7 +116,7 @@ class FGES:
         if self.graph is None:
             self.graph = nx.DiGraph()
             self.graph.add_nodes_from(self.variables)
-            self.printm("Created Graph with nodes: ", self.graph.nodes())
+            print("Created Graph with nodes: ", self.graph.nodes())
 
             # for now faithfulness is assumed
             self.add_required_edges()
@@ -145,7 +156,7 @@ class FGES:
         the list is resorted. This process is repeated until there remain no edges to add with positive bump."""
         print("Running FES.`.")
         print("Length of sorted arrows", len(self.sorted_arrows))
-        self.printm(self.arrow_dict)
+        self.printm("arrow_dict:", self.arrow_dict)
         while len(self.sorted_arrows) > 0:
             if self.checkpoint_frequency > 0 and (time.time() - self.last_checkpoint) > self.checkpoint_frequency:
                 self.create_checkpoint()
@@ -153,7 +164,7 @@ class FGES:
             max_bump_arrow = self.sorted_arrows.pop(0)  # Pops the highest bump edge off the sorted list
             x = max_bump_arrow.a
             y = max_bump_arrow.b
-            self.printm("Popped arrow: " + str(x) + " -> " + str(y))
+            self.printm("Popped arrow from sorted_arrows (with bumps): " + str(x) + " -> " + str(y))
 
             if graph_util.adjacent(self.graph, x, y):
                 continue
