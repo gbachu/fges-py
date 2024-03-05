@@ -71,8 +71,8 @@ class FGES:
         self.verbose = verbose
 
     # Print with Matrix
-    def printm(*message):
-        print(message)
+    def printm(self, *message):
+        print(*message)
         matrix = np.empty((4, 4))
         for arrow in self.arrow_dict.keys():
             matrix[arrow[0], arrow[1]] = 1
