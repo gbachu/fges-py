@@ -81,10 +81,11 @@ class FGES:
         print("PRE-MATRIX")
         for i in range(4):
             for j in range(4):
-                print(matrix[i][j], end="")
                 # Add an "!" if the value changed from the last time printm was called
+                end = " "
                 if last_matrix is not None and matrix[i][j] == last_matrix[i][j]:
-                    print("!", end="")
+                    end = "! "
+                print(matrix[i][j], end=end)
             print()
         print()
         last_matrix = matrix
