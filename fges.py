@@ -73,7 +73,7 @@ class FGES:
     # Print with Matrix
     def printm(self, *message):
         print(*message)
-        matrix = np.empty((4, 4), dtype=int)
+        matrix = np.zeros((4, 4), dtype=int)
         for arrow in self.arrow_dict.keys():
             matrix[arrow[0], arrow[1]] = 1
         print(matrix)
