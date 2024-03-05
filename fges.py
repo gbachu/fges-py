@@ -69,7 +69,7 @@ class FGES:
         self.in_bes = False
         self.knowledge = knowledge
         self.verbose = verbose
-    
+
     # Print with Matrix
     def printm(message=None):
         print(message)
@@ -104,7 +104,7 @@ class FGES:
         if self.graph is None:
             self.graph = nx.DiGraph()
             self.graph.add_nodes_from(self.variables)
-            printm("Created Graph with nodes: ", self.graph.nodes())
+            self.printm("Created Graph with nodes: ", self.graph.nodes())
 
             # for now faithfulness is assumed
             self.add_required_edges()
