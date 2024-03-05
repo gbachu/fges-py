@@ -82,8 +82,8 @@ class FGES:
         for i in range(4):
             for j in range(4):
                 # Add an "!" if the value changed from the last time printm was called
-                end = " "
-                if last_matrix is not None and matrix[i][j] == last_matrix[i][j]:
+                end = "  "
+                if last_matrix is not None and matrix[i][j] != last_matrix[i][j]:
                     end = "! "
                 print(matrix[i][j], end=end)
             print()
