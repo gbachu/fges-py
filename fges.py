@@ -9,7 +9,6 @@ import dill
 import os
 from knowledge import Knowledge
 
-
 class Arrow:
     __slots__ = ['a', 'b', 'na_y_x', 'h_or_t', 'bump', 'index']
     def __init__(self, a, b, na_y_x, hOrT, bump, arrow_index):
@@ -70,13 +69,21 @@ class FGES:
         self.in_bes = False
         self.knowledge = knowledge
         self.verbose = verbose
-
+    
+    # Print with Matrix
+    def printm(message=None):
+        print(message)
+        matrix = np.empty((4, 4))
+        for arrow in self.arrow_dict.keys():
+            matrix[arrow[0], arrow[1]] = 1
+        print(matrix)
+        
     def set_knowledge(self, knowledge):
         if not isinstance(knowledge, Knowledge):
             raise TypeError("knowledge must be of type Knowledge")
         else:
             self.knowledge = knowledge
-
+    
     def get_dict(self):
         return {"graph": self.graph,
                 "sparsity": self.sparsity,
@@ -97,7 +104,7 @@ class FGES:
         if self.graph is None:
             self.graph = nx.DiGraph()
             self.graph.add_nodes_from(self.variables)
-            print("Created Graph with nodes: ", self.graph.nodes())
+            printm("Created Graph with nodes: ", self.graph.nodes())
 
             # for now faithfulness is assumed
             self.add_required_edges()
