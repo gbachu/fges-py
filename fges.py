@@ -87,9 +87,9 @@ class FGES:
                     end = "! "
                 print(matrix[i][j], end=end)
             print()
-        print()
         last_matrix = matrix
         print(*message)
+        print()
         
     def set_knowledge(self, knowledge):
         if not isinstance(knowledge, Knowledge):
