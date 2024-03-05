@@ -75,7 +75,7 @@ class FGES:
         matrix = np.zeros((4, 4), dtype=int)
         for arrow in self.arrow_dict.keys():
             matrix[arrow[0], arrow[1]] = 1
-        print("MATRIX")
+        print("PRE-MATRIX")
         print(matrix)
         print(*message)
         
