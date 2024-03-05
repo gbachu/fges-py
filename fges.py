@@ -72,12 +72,12 @@ class FGES:
 
     # Print with Matrix
     def printm(self, *message):
-        print(*message)
         matrix = np.zeros((4, 4), dtype=int)
         for arrow in self.arrow_dict.keys():
             matrix[arrow[0], arrow[1]] = 1
         print("MATRIX")
         print(matrix)
+        print(*message)
         
     def set_knowledge(self, knowledge):
         if not isinstance(knowledge, Knowledge):
